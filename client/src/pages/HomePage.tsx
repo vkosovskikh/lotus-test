@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { apiBaseUrl } from "../api/baseApi";
 
 export default function HomePage() {
   const [hello, setHello] = useState("");
 
   useEffect(() => {
-    fetch("/api/hello")
+    fetch(`${apiBaseUrl}/hello`)
       .then((res) => {
         return res.text();
       })

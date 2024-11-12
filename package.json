@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:up": "docker compose -f docker-compose.dev.yml --env-file .env.development up -d --build --remove-orphans",
+    "dev:down": "docker compose -f docker-compose.dev.yml --env-file .env.development down"
   },
   "keywords": [],
   "author": "",
