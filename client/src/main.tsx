@@ -6,6 +6,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TradePage from "./pages/TradePage/TradePage.tsx";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import RegisterPage from "./pages/RegisterPage/RegisterPage.tsx";
+import { Provider } from "react-redux";
+import { store } from "./store/store.ts";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute.tsx";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +18,15 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <TradePage />,
+        element: (
+          <PrivateRoute>
+            <TradePage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
       },
     ],
   },
@@ -22,6 +34,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>
 );
