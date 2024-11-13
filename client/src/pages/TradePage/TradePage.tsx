@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { apiBaseUrl } from "../api/baseApi";
+import { apiBaseUrl } from "../../api/baseApi";
 
-export default function HomePage() {
+export default function TradePage() {
   const [hello, setHello] = useState("");
 
   useEffect(() => {
@@ -10,7 +10,6 @@ export default function HomePage() {
         return res.text();
       })
       .then((data) => {
-        console.log(data);
         setHello(data);
       });
   }, []);
