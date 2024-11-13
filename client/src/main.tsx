@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage.tsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute.tsx";
+import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <RegisterPage />,
+      },
+      {
+        path: "/login/:token",
+        element: <LoginPage />,
+      },
+      {
+        path: "*",
+        element: <div>Not found</div>,
       },
     ],
   },

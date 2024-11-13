@@ -1,9 +1,12 @@
 import { PropsWithChildren } from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../store/store";
 
 export default function Layout(props: PropsWithChildren) {
   const location = useLocation();
+
+  const auth = useAppSelector((state) => state.app.auth);
 
   return (
     <>
@@ -14,6 +17,19 @@ export default function Layout(props: PropsWithChildren) {
             <Nav.Link active={location.pathname === "/"} as={Link} to="/">
               Торги
             </Nav.Link>
+          </Nav>
+          <Nav className="ms-auto">
+            {auth ? (
+              <div>
+                {auth.login} ({auth.role})
+              </div>
+            ) : (
+              <Link to="/register">
+                <Button variant="secondary" size="sm">
+                  Регистрация
+                </Button>
+              </Link>
+            )}
           </Nav>
         </Container>
       </Navbar>

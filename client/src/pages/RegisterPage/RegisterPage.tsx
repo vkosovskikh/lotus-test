@@ -1,15 +1,31 @@
 import { FormEventHandler, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { registerAction } from "../../store/appSlice";
+import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("user");
-  const [loginLink, setLoginLink] = useState("");
+  const dispatch = useAppDispatch();
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const { isRegisterPending } = useAppSelector((state) => state.app);
+
+  const [login, setLogin] = useState("");
+  const [role, setRole] = useState("user");
+  const [token, setToken] = useState("");
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    console.log(username, role);
-    setLoginLink("bla");
+    try {
+      const res = await dispatch(registerAction({ login, role })).unwrap();
+
+      setToken(res.token);
+    } catch (e) {
+      if (typeof e === "object" && "status" in e! && e.status === 409) {
+        alert("Логин уже существует");
+      } else {
+        alert("Ошибка сервера");
+      }
+    }
   };
 
   return (
@@ -17,13 +33,13 @@ export default function RegisterPage() {
       <h2 style={{ textAlign: "center" }}>Регистрация</h2>
 
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formUsername">
+        <Form.Group className="mb-3" controlId="formLogin">
           <Form.Label>Логин</Form.Label>
           <Form.Control
             type="text"
             placeholder="Введите логин"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
             required
           />
         </Form.Group>
@@ -36,17 +52,17 @@ export default function RegisterPage() {
           </Form.Select>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" disabled={isRegisterPending}>
           Получить ссылку
         </Button>
       </Form>
 
-      {loginLink && (
+      {token && (
         <div className="mt-2">
           <strong>Ссылка для входа:</strong>{" "}
-          <a href={loginLink} target="_blank">
-            {loginLink}
-          </a>
+          <Link to={`/login/${token}`} style={{ wordBreak: "break-all" }}>
+            http://{window.location.host}/login/{token}
+          </Link>
         </div>
       )}
     </Container>
