@@ -31,7 +31,6 @@ export default function TradePage() {
   const [currentPlayer, setCurrentPlayer] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(0);
   const [turnTimeLeft, setTurnTimeLeft] = useState(0);
-  const [isAuctionStarted, setIsAuctionStarted] = useState(false);
   const [yourValue, setYourValue] = useState("0");
 
   const joinAuction = () => {
@@ -93,7 +92,6 @@ export default function TradePage() {
       socket.current.on(
         "auctionStarted",
         ({ timeLeft, turnTimeLeft, currentPlayerIndex }) => {
-          setIsAuctionStarted(true);
           setTimeLeft(timeLeft);
           setTurnTimeLeft(turnTimeLeft);
           setCurrentPlayer(currentPlayerIndex);
@@ -101,7 +99,6 @@ export default function TradePage() {
       );
 
       socket.current.on("auctionEnded", ({ winner }) => {
-        setIsAuctionStarted(false);
         setTimeLeft(0);
         setTurnTimeLeft(0);
         setCurrentPlayer(null);
