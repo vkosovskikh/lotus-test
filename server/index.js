@@ -153,7 +153,7 @@ io.on("connection", (socket) => {
         });
       }
 
-      timeLeft = 95; // 900 15min
+      timeLeft = 900; // 15min
       turnTimeLeft = 30; // 30sec
       currentPlayerIndex = 0;
       isAuctionStarted = true;
