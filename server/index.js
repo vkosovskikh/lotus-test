@@ -96,6 +96,7 @@ io.on("connection", (socket) => {
 
       socket.join("auctionRoom");
       socket.emit("playersUpdate", players);
+      socket.emit("joinedRoom");
     } catch (e) {
       socket.emit("error", { message: "Неверный токен" });
     }

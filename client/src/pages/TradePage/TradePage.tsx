@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { useAppSelector } from "../../store/store";
-import { Button, FormControl, InputGroup, Table } from "react-bootstrap";
+import {
+  Button,
+  FormControl,
+  InputGroup,
+  Spinner,
+  Table,
+} from "react-bootstrap";
 
 function formatTime(seconds: number) {
   const minutes = Math.floor(seconds / 60);
@@ -18,6 +24,7 @@ export default function TradePage() {
 
   const auth = useAppSelector((state) => state.app.auth);
 
+  const [joinedRoom, setJoinedRoom] = useState(false);
   const [players, setPlayers] = useState<
     Array<{ socketId: string; login: string; value: number }>
   >([]);
@@ -66,6 +73,10 @@ export default function TradePage() {
     if (auth) {
       socket.current.emit("joinAuctionRoom", { token: auth.token });
 
+      socket.current.on("joinedRoom", () => {
+        setJoinedRoom(true);
+      });
+
       socket.current.on("playersUpdate", (updatedPlayers) => {
         setPlayers(updatedPlayers);
       });
@@ -104,6 +115,8 @@ export default function TradePage() {
     }
 
     return () => {
+      setJoinedRoom(false);
+
       if (socket.current) {
         socket.current.disconnect();
         socket.current = null;
@@ -112,6 +125,10 @@ export default function TradePage() {
   }, [auth]);
 
   if (!auth) return null;
+
+  if (!joinedRoom) {
+    return <Spinner />;
+  }
 
   return (
     <div>
