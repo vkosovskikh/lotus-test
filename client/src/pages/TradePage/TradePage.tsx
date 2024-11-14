@@ -183,23 +183,15 @@ export default function TradePage() {
 
       {auth.role === "admin" && (
         <div>
-          <Button onClick={startAuction} disabled={isAuctionStarted}>
-            Начать торги
-          </Button>
-          <Button
-            className="ms-2"
-            onClick={endAuction}
-            disabled={!isAuctionStarted}
-          >
+          <Button onClick={startAuction}>Начать торги</Button>
+          <Button className="ms-2" onClick={endAuction}>
             Завершить торги
           </Button>
         </div>
       )}
 
       {auth.role === "user" && (
-        <Button onClick={joinAuction} disabled={isAuctionStarted}>
-          Присоединиться к торгам
-        </Button>
+        <Button onClick={joinAuction}>Присоединиться к торгам</Button>
       )}
     </div>
   );
